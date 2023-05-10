@@ -336,6 +336,7 @@ def to_sql(
     quotechar: Optional[str] = None,
     encoding: Optional[str] = None,
     work_directory: Optional[Path] = None,
+    login_timeout: Optional[int] = 15,
 ):
     """
     Writes the pandas DataFrame to a SQL table or view.
@@ -396,6 +397,12 @@ def to_sql(
     work_directory: pathlib.Path, default None
         Optional directory where temporary files are written to. If not provided, defaults to the
         system-default for temporary files.
+    login_timeout: int, default None
+        Optional int for login timeout. According to Microsoft: "specifies the number of seconds 
+        before a login to SQL Server times out when you try to connect to a server. The default 
+        login timeout is 15 seconds. The login timeout must be a number between 0 and 65534. 
+        If the value supplied is not numeric or does not fall into that range, bcp generates an 
+        error message. A value of 0 specifies an infinite timeout."
 
     Notes
     -----
@@ -479,6 +486,7 @@ def to_sql(
             batch_size=batch_size,
             use_tablock=use_tablock,
             bcp_path=bcp_path,
+            login_timeout=login_timeout,
         )
     finally:
         if not debug:
