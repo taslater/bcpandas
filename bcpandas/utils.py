@@ -49,6 +49,7 @@ def bcp(
     col_delimiter: Optional[str] = None,
     row_terminator: Optional[str] = None,
     bcp_path: Optional[Union[str, Path]] = None,
+    login_timeout: Optional[int] = 15,
 ):
     """
     See https://docs.microsoft.com/en-us/sql/tools/bcp-utility
@@ -94,6 +95,8 @@ def bcp(
         "-d",
         creds.database,
         "-q",  # Executes the SET QUOTED_IDENTIFIERS ON statement, needed for Azure SQL DW
+        "-l",
+        login_timeout
     ] + auth
 
     if batch_size:
